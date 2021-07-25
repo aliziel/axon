@@ -1,5 +1,6 @@
 import ResolvePath from './ResolvePath';
 import FuncDefinitionParser from './FuncDefinitionParser';
+import {ESTree} from 'meriyah';
 
 const AbstractSyntaxTree = require('abstract-syntax-tree');
 
@@ -12,7 +13,7 @@ const expressMethods: BoolDictionary = {
   use: true,
 };
 
-const arrayFromArguments = (argsArray: any[], targetArray: EndpointArray|string[]) => {
+const arrayFromArguments = (argsArray: ESTree.Node[], targetArray: EndpointArray|string[]) => {
   for (let i = 1; i < argsArray.length; i++) {
     const stringFunction = AbstractSyntaxTree.generate(argsArray[i]);
     targetArray.push(stringFunction);
@@ -47,7 +48,7 @@ export default function (fileText: string, currentFilePath:string) {
   fileObject.endpoints = {};
   fileObject.routers = {};
 
-  const addEndpoint = (route: string, method: string, argsArray: any[]) => {
+  const addEndpoint = (route: string, method: string, argsArray: ESTree.Node[]) => {
     // Initialize a new endpoint array
     const endpointArray: EndpointArray = [method];
     // Traverse Through the arguments of the Express Endpoint Method and build the new endpointArray
@@ -64,7 +65,7 @@ export default function (fileText: string, currentFilePath:string) {
     };
   };
 
-  const addRouter = (route: string, argsArray: any[]) => {
+  const addRouter = (route: string, argsArray: ESTree.Node[]) => {
     // Initialize a new Router Array
     const routerArray: string[] = [route];
     // Traverse Through the arguments of the Express Method and build the new Router Array
@@ -118,7 +119,7 @@ export default function (fileText: string, currentFilePath:string) {
         },
       },
     });
-    
+   
     for(let statement of endpoints){
       const argumentsArray = statement.expression.arguments;
       const route = argumentsArray[0].value;

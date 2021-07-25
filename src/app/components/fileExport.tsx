@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import check from '../../../assets/Checkmark.png';
 
 // This functional component will handle all export functionality
-const FileExport = (props:any) => {
+const FileExport = (props:ExportProps) => {
 
   // Global variable to store the Supertest code or Postman collections being exported
   const text = props.fileType ? props.superTest : props.postmanCollection;
 
   // Generate the name of the file that will be exported:
-  let filename:any;
+  let filename:string;
 
   // Handle the Case that the input field is blank
   if (props.textInput === '') {

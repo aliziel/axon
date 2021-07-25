@@ -3,19 +3,20 @@ import buildPathObject from '../../utils/buildPathObject';
 import check from '../../../assets/folder-with-checkmark.png';
 
 // Create functional component to return import button and functionality for state change
-const FileImport = (props:any) => {
+const FileImport = (props:ImportProps) => {
 
   // This function will set the current state, when the import button is pressed.
-  const onFileUpload = (e:any) :void => {
+  const onFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+
     // Attempt to build the PathObject from the Files in State
-    buildPathObject(e.target.files)
+    buildPathObject(e.target.files as ServerDirectory)
     // When sucessfully built, update the state with the new pathObject
       .then((pathObject) => {
-        props.setFileState(pathObject, check);
+        props.setFileState(pathObject as PathObject, check);
       })
     // When unsucessfully built, attempt to update the state with the new pathObject
       .catch((pathObject) => {
-        props.setFileState(pathObject, check);
+        props.setFileState(pathObject as PathObject, check);
       });
   };
 

@@ -98,7 +98,7 @@ interface REMatch{
 }
 
 interface FileWithPath extends File {
-  webkitRelativePath: string,
+  webkitRelativePath?: string,
 }
 
 interface ServerDirectory {
@@ -129,4 +129,27 @@ interface ReturnMethods {
   json: string,
   send: string,
   sendFile: ExtensionDictionary
+}
+
+declare module '*.png';
+
+type OnFileUpload = (pathObject: PathObject, checkImage:'.png') => void
+interface ImportProps {
+  setFileState: OnFileUpload
+}
+
+type OnExportClick = (newProgressState:string, progVal: string, checkImg: '.png') => void
+interface ExportProps {
+  fileType: boolean,
+  postmanCollection: string,
+  superTest: string,
+  textInput: string,
+  disableStatus: boolean,
+  setProgressState: OnExportClick
+}
+
+declare namespace React {
+  interface HTMLAttributes<T> extends AriaAttributes, DOMAttributes<T> {
+    webkitdirectory?: string;
+  }
 }

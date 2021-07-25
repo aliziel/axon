@@ -1,4 +1,5 @@
 const AbstractSyntaxTree = require('abstract-syntax-tree');
+import {ESTree} from 'meriyah';
 
 const returnMethods: ReturnMethods = {
   status: true,
@@ -10,7 +11,7 @@ const returnMethods: ReturnMethods = {
   }
 };
 
-const identifyContent = (method:string, args:any, functionString:string) => {
+const identifyContent = (method:string, args:ESTree.Literal, functionString:string) => {
   if(method === 'send' && typeof args.value === 'string') return 'html';
   if(method === 'json' || method === 'send') return returnMethods[method];
   if(method === 'sendFile') {

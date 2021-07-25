@@ -1,8 +1,8 @@
-// MONACO OPTIONS PAGE:
+import monaco from 'monaco-editor'
 
-const options: any = {
+const options: monaco.editor.IEditorOptions = {
   selectOnLineNumbers: true,
-  autoIndent: true,
+  autoIndent: 'advanced',
   colorDecorators: true,
   wrappingIndent: 'indent',
   wordWrap: 'off',

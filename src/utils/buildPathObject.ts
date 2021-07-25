@@ -20,7 +20,7 @@ export default function (fileList:ServerDirectory) {
     for (let i = 0; i < fileList.length; i++) {
       // Attempt to read the current file
       const promise = fileList[i].text();
-
+      const filePath = <string>fileList[i].webkitRelativePath;
       // Push the resulting promise into the promises array
       arrayOfPromises.push(promise);
 
@@ -32,7 +32,7 @@ export default function (fileList:ServerDirectory) {
 
           // When the type of file is a server, add the server path to the pathObject
           if (fileType === 'Server') {
-            pathObject.__serverFilePath__ = fileList[i].webkitRelativePath;
+            pathObject.__serverFilePath__ = filePath;
             pathObject.__portNumber__ = <string>portNumber;
           }
 
@@ -41,7 +41,7 @@ export default function (fileList:ServerDirectory) {
           // When the file is a server or router file
           if (fileType === 'Server' || fileType === 'Router') {
             // Extract necessary route and endpoint data from fileText
-            const { imports, endpoints, routers } = FindEndpointData(fileText, fileList[i].webkitRelativePath);
+            const { imports, endpoints, routers } = FindEndpointData(fileText, filePath);
             // Add relevant data to the new file object
             newFileObject = {
               name: fileList[i].name,
@@ -58,7 +58,7 @@ export default function (fileList:ServerDirectory) {
           }
 
           // Add the newly created file object to the pathObject
-          pathObject[fileList[i].webkitRelativePath] = newFileObject;
+          pathObject[filePath] = newFileObject;
         })
       // When file read is unsucessfully read
         .catch((err) => {
@@ -67,7 +67,7 @@ export default function (fileList:ServerDirectory) {
             name: fileList[i].name,
             text: err,
           };
-          pathObject[fileList[i].webkitRelativePath] = newFileObject;
+          pathObject[filePath] = newFileObject;
         });
     }
 

@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './app.scss';
 import FileImport from '@/app/components/fileImport';
 import FileExport from '@/app/components/fileExport';
+import monaco from 'monaco-editor'
 import MonacoEditor from '@monaco-editor/react';
 import options from './options';
 import uploadFolder from '../../assets/folderImport.png';
@@ -41,7 +42,7 @@ const RootComponent = () => {
  `;
 
   // Initialize the State for the component
-  const [axonState, setAxonState] = useState <any | undefined>({
+  const [axonState, setAxonState] = useState ({
     // The Path Object that will be created from the imported Folder
     pathObject: {},
 
@@ -76,7 +77,7 @@ const RootComponent = () => {
 
   // This function will update the State so that the Postman code can be shown in the Monaco Editor
   const showPostmanCode = () => {
-    if (!axonState.showPostmanCode) {
+    if (!axonState.showPostManCode) {
       setAxonState({
         ...axonState,
         showPostManCode: true,
@@ -86,27 +87,26 @@ const RootComponent = () => {
   };
 
   // This function will update the text of the Monaco editor, based on the 'showPostManCode' and 'showSuperTestCode' booleans in the State
-  const updateMonacoEditor = (monacoText: any): void => {
+  const updateMonacoEditor = (monacoText:string | undefined, e: monaco.editor.IModelContentChangedEvent) => {
     // Case: When the Postman Code should be shown
     if (axonState.showPostManCode) {
       setAxonState({
         ...axonState,
-        postmanCollections: monacoText,
+        postmanCollections: monacoText as string,
       });
     // Case: When the SuperTest Code should be shown
     } else if (axonState.showSuperTestCode) {
       setAxonState({
         ...axonState,
-        superTestCode: monacoText,
+        superTestCode: monacoText as string,
       });
     }
   };
 
   // This function will update the state once a file is imported
-  const onImportClick = (pathObject: any, checkImage: any) => {
+  const onImportClick = (pathObject: PathObject, checkImage:'.png') => {
     setAxonState({
       ...axonState,
-      fileList: {},
       progressText: 'Your files have been imported',
       image: checkImage,
       progressVal: '33.33%',
@@ -157,7 +157,7 @@ const RootComponent = () => {
   };
 
   // This function will update the state once a file is exported, in order to show the current progress of the user
-  const onExportClick = (newProgressState:any, progVal: any, checkImg: any) => {
+  const onExportClick = (newProgressState:string, progVal: string, checkImg:'.png') => {
     setAxonState({
       ...axonState,
       progressText: newProgressState,
